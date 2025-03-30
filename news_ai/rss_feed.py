@@ -24,7 +24,7 @@ now = datetime.now(timezone.utc)
 last_24hrs = now - timedelta(days=1)
 
 
-def news():
+def rss_news():
     rss_feeds_news = []
     for urls in rss_feeds.values():
             for url in urls:

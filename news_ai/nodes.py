@@ -6,7 +6,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_community.utilities import GoogleSerperAPIWrapper
 
 # Nodes
-def news(topic: str):
+def google_news(topic: str):
     search = GoogleSerperAPIWrapper(type="news", tbs="qdr:h24")
     results = search.results(topic)
     
@@ -20,7 +20,7 @@ def news(topic: str):
 def orchestrator(state: State):
     """Orchestrator that generates a plan for the news"""
 
-    latest_news = news(state["news_topic"])
+    latest_news = google_news(state["news_topic"])
 
     # Generate queries
     report_sections = planner.invoke(
