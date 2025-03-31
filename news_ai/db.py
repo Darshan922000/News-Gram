@@ -50,10 +50,10 @@ def delete_old_news(hours=48):
     conn.close()
 
 # Get news by optional filters (e.g., keyword only)
-def get_news(keyword=None, limit=100):
+def get_rss_news(keyword=None, limit=100):
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
-
+    print(keyword)
     query = "SELECT title, link, date, source FROM news WHERE 1=1"
     params = []
 

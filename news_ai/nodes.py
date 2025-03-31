@@ -1,44 +1,71 @@
 from langgraph.constants import Send
-from news_ai.instructions import orchestration_instruction, worker_instruction
+from news_ai.instructions import orchestration_instruction, worker_instruction, news_instruction
 from news_ai.schema import WorkerState, State
-from news_ai.planner import planner, llm
+from news_ai.planner import planner, llm, newsai
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_community.utilities import GoogleSerperAPIWrapper
+from news_ai.db import get_rss_news
 
 # Nodes
 def google_news(topic: str):
     search = GoogleSerperAPIWrapper(type="news", tbs="qdr:h24")
     results = search.results(topic)
+    #pprint.pp(results)
     
     for news in results["news"]:
-        for key in ['imageUrl', 'position']:
+        for key in ['imageUrl', 'position', 'snippet']:
             if key in news:
                 del news[key] 
- 
-    return results['news']
+
+    #pprint.pp(results)
+    return results['news'] 
+
+def news(topic: str):
+    g_news = google_news(topic)
+    r_news = get_rss_news(keyword=topic)
+    print("r_news = ",r_news)
+    latest_news = g_news + r_news
+    return latest_news
+
+def news_ai(state: State):
+    """AI agent that understand user query and generate string for news extraction"""
+
+    news_topic = newsai.invoke(
+        [
+            SystemMessage(content=news_instruction),
+            HumanMessage(
+                content=f"Here is the user query: {state['news_topic']}"
+            ),
+        ]
+    )
+    # news_topic_dict = news_topic.model_dump()
+    # print("news_topic:", news_topic_dict)
+
+    topic = news_topic.news_topic
+    latest_news = news(topic=topic)
+    print("latest =", latest_news)
+    return {"latest_news": latest_news}
+
 
 def orchestrator(state: State):
     """Orchestrator that generates a plan for the news"""
 
-    latest_news = google_news(state["news_topic"])
-
-    # Generate queries
     report_sections = planner.invoke(
         [
             SystemMessage(content=orchestration_instruction),
             HumanMessage(
-                content=f"Here is the latest AI news: {latest_news}"
+                content=f"Here is the latest AI news: {state['latest_news']}"
             ),
         ]
     )
-  
+
+    print("Report Sections:",report_sections)
 
     return {"sections": report_sections.sections}
 
 def llm_call(state: WorkerState):
     """Worker writes a section of the report"""
 
-    # Generate section
     section = llm.invoke(
         [
             SystemMessage(content=worker_instruction),
@@ -56,9 +83,8 @@ def llm_call(state: WorkerState):
 def synthesizer(state: State):
     """Synthesize full report from sections"""
 
-    # List of completed sections
     completed_sections = state["completed_sections"]
-  
+
     completed_report_sections = "\n\n---\n\n".join(completed_sections)
 
     return {"final_report": completed_report_sections}
@@ -67,4 +93,6 @@ def synthesizer(state: State):
 # Conditional edge function to create llm_call workers that each write a section of the report
 def assign_workers(state: State):
     """Assign a worker to each section in the plan"""
+    #print([s for s in state["sections"]])
+    # Kick off section writing in parallel via Send() API
     return [Send("llm_call", {"section": s}) for s in state["sections"]]

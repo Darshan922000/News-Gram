@@ -33,3 +33,6 @@ class State(TypedDict):
 class WorkerState(TypedDict):
     section: Section
     completed_sections: Annotated[list, operator.add]
+
+class query(BaseModel):
+    news_topic: str = Field(description="string for topic")
