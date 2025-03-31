@@ -30,6 +30,22 @@ def synth_mind():
     return graph
 
 
+def explainer():
+    # Build workflow
+    builder = StateGraph(ExplainerState)
+
+    # Add the nodes
+    builder.add_node("explainer", explainer)
+
+    # Add edges to connect nodes
+    builder.add_edge(START, "explainer")
+    builder.add_edge("explainer", END)
+
+    # Compile the workflow
+    graph_2 = builder.compile()
+
+    return graph_2
+
 
 
 

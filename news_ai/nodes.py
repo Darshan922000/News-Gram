@@ -1,6 +1,6 @@
 from langgraph.constants import Send
-from news_ai.instructions import orchestration_instruction, worker_instruction, news_instruction
-from news_ai.schema import WorkerState, State
+from news_ai.instructions import orchestration_instruction, news_instruction, analysis_instruction, explainer_instructions
+from news_ai.schema import WorkerState, State, ExplainerState
 from news_ai.planner import planner, llm, newsai
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_community.utilities import GoogleSerperAPIWrapper
@@ -10,14 +10,12 @@ from news_ai.db import get_rss_news
 def google_news(topic: str):
     search = GoogleSerperAPIWrapper(type="news", tbs="qdr:h24")
     results = search.results(topic)
-    #pprint.pp(results)
     
     for news in results["news"]:
         for key in ['imageUrl', 'position', 'snippet']:
             if key in news:
                 del news[key] 
 
-    #pprint.pp(results)
     return results['news'] 
 
 def news(topic: str):
@@ -38,14 +36,13 @@ def news_ai(state: State):
             ),
         ]
     )
-    # news_topic_dict = news_topic.model_dump()
-    # print("news_topic:", news_topic_dict)
 
     topic = news_topic.news_topic
+    print(topic)
     latest_news = news(topic=topic)
     print("latest =", latest_news)
     return {"latest_news": latest_news}
-
+    
 
 def orchestrator(state: State):
     """Orchestrator that generates a plan for the news"""
@@ -58,7 +55,6 @@ def orchestrator(state: State):
             ),
         ]
     )
-
     print("Report Sections:",report_sections)
 
     return {"sections": report_sections.sections}
@@ -68,7 +64,7 @@ def llm_call(state: WorkerState):
 
     section = llm.invoke(
         [
-            SystemMessage(content=worker_instruction),
+            SystemMessage(content=analysis_instruction),
             HumanMessage(
                 content=f"Here is the news_title: {state['section'].title},\
                       news_link: {state['section'].link}, time_published: {state['section'].time_published},\
@@ -82,7 +78,7 @@ def llm_call(state: WorkerState):
 
 def synthesizer(state: State):
     """Synthesize full report from sections"""
-
+    # List of completed sections
     completed_sections = state["completed_sections"]
 
     completed_report_sections = "\n\n---\n\n".join(completed_sections)
@@ -96,3 +92,18 @@ def assign_workers(state: State):
     #print([s for s in state["sections"]])
     # Kick off section writing in parallel via Send() API
     return [Send("llm_call", {"section": s}) for s in state["sections"]]
+
+def explainer(state: ExplainerState):
+    
+
+    explainer = llm
+    response = explainer.invoke(
+        [
+            SystemMessage(content=explainer_instructions),
+            HumanMessage(
+                content=f"Here is the question: {state['question']}"
+            ),
+        ]
+    )
+   
+    return {"answer": response.content}

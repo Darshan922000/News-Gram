@@ -4,26 +4,7 @@ from pydantic import BaseModel
 from langgraph.graph.message import MessagesState
 import uvicorn
 from IPython.display import Markdown
-from news_ai.graph import orchestrator_worker
-from dotenv import load_dotenv
-load_dotenv()
-import streamlit as st
-
-# call APIs
-os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
-os.environ["LANGSMITH_PROJECT"]=os.getenv("LANGSMITH_PROJECT")
-os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
-os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
-
-
-from fastapi import FastAPI
-import os
-from pydantic import BaseModel
-from langgraph.graph.message import MessagesState
-import uvicorn
-from IPython.display import Markdown
-from news_ai.graph import orchestrator_worker
+from news_ai.graph import synth_mind
 from dotenv import load_dotenv
 load_dotenv()
 import streamlit as st
@@ -187,7 +168,8 @@ st.markdown("""
 
 # Function to process AI news
 def process_ai_news():
-    response = orchestrator_worker.invoke({"news_topic": "AI"})
+    graph = synth_mind()
+    response = graph.invoke({"news_topic": "AI"})
     explanation = response.get("final_report", "No response received.")
     return explanation
 

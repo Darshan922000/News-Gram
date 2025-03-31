@@ -29,6 +29,10 @@ class State(TypedDict):
     completed_sections: Annotated[list, operator.add]  # All workers write to this key in parallel
     final_report: str  # Final report
 
+class ExplainerState(TypedDict):
+    question: str
+    answer: str
+
 # Worker state
 class WorkerState(TypedDict):
     section: Section
