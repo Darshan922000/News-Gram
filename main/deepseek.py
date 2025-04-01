@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from langgraph.graph.message import MessagesState
 import uvicorn
 from IPython.display import Markdown
-from news_ai.graph import synth_mind
+from news_ai.system.graph import synth_mind
 from dotenv import load_dotenv
 load_dotenv()
 import streamlit as st

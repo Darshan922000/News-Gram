@@ -25,6 +25,7 @@ class Sections(BaseModel):
 # Graph state
 class State(TypedDict):
     news_topic: str  # news topic
+    latest_news: list[dict]
     sections: list[Section]  # List of news sections
     completed_sections: Annotated[list, operator.add]  # All workers write to this key in parallel
     final_report: str  # Final report

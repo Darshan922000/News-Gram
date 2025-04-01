@@ -1,6 +1,7 @@
-from news_ai.schema import State
-from news_ai.nodes import orchestrator, synthesizer, llm_call, assign_workers, news_ai
+from news_ai.structure.schema import State, ExplainerState
+from news_ai.agents.nodes import orchestrator, synthesizer, llm_call, assign_workers, news_ai, explainer
 from langgraph.graph import StateGraph, START, END
+
 
 def synth_mind():
     # Build workflow
@@ -30,19 +31,19 @@ def synth_mind():
     return graph
 
 
-def explainer():
+def help_search():
     # Build workflow
-    builder = StateGraph(ExplainerState)
+    builder_2 = StateGraph(ExplainerState)
 
     # Add the nodes
-    builder.add_node("explainer", explainer)
+    builder_2.add_node("explainer", explainer)
 
     # Add edges to connect nodes
-    builder.add_edge(START, "explainer")
-    builder.add_edge("explainer", END)
+    builder_2.add_edge(START, "explainer")
+    builder_2.add_edge("explainer", END)
 
     # Compile the workflow
-    graph_2 = builder.compile()
+    graph_2 = builder_2.compile()
 
     return graph_2
 

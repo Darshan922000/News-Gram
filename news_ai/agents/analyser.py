@@ -1,5 +1,5 @@
-from news_ai.planner import llm
-from news_ai.instructions import analysis_instruction
+from news_ai.llm.planner import llm
+from news_ai.instructor.instructions import analysis_instruction
 from langchain_core.messages import SystemMessage, HumanMessage
 
 analyser = llm
