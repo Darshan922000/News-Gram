@@ -9,6 +9,7 @@ You will receive the latest AI news scraped from the web in the form of list of 
 
 Your task is to:
 1. Analyze each news item. 
+2. arrange the news in ascending order of date.
 3. Your task is to generate a well-organized outline (plan) for the given news information.
 """
 

@@ -2,7 +2,6 @@ from news_ai.structure.schema import State, ExplainerState
 from news_ai.agents.nodes import orchestrator, synthesizer, llm_call, assign_workers, news_ai, explainer
 from langgraph.graph import StateGraph, START, END
 
-
 def synth_mind():
     # Build workflow
     builder = StateGraph(State)

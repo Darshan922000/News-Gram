@@ -113,8 +113,15 @@ header {
 header h1 {
     font-size: 2.75rem;
     font-weight: bold;
-    color: var(--news-primary);
     margin: 0.5rem 0;
+}
+
+.news-text {
+    color: var(--news-primary);
+}
+
+.ai-text {
+    color: var(--help-primary);
 }
 
 /* Search container */

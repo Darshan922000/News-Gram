@@ -2,9 +2,19 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-
+from langchain_core.messages import HumanMessage
 from news_ai.system.graph import synth_mind, help_search
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+
+# os.environ["LANGSMITH_TRACING"] = "true"
+# os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
+# os.environ["LANGSMITH_PROJECT"]=os.getenv("LANGSMITH_PROJECT")
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 # Create FastAPI app
 app = FastAPI(
     title="News AI API",
@@ -45,9 +55,10 @@ async def search_news(request: NewsSearchRequest):
 @app.post("/help_search")
 async def analyze_news(request: HelpRequest):
     try:
+
         support = help_search()
         result = support.invoke({"question": request.query})
-        
+        print(result["answer"])
         return {"report": result["answer"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error analyzing news: {str(e)}")

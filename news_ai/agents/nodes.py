@@ -8,34 +8,9 @@ from news_ai.db.db import get_rss_news
 from news_ai.logging.logger import logging
 from news_ai.exception_handler.exception import NewsException
 import sys
+from news_ai.agents.functions import news
 
 # Nodes
-def google_news(topic: str):
-    logging.info("Entered in Google News")
-    try:
-        search = GoogleSerperAPIWrapper(type="news", tbs="qdr:h24")
-        results = search.results(topic)
-        
-        for news in results["news"]:
-            for key in ['imageUrl', 'position', 'snippet']:
-                if key in news:
-                    del news[key] 
-
-            return results['news'] 
-    except Exception as e:
-        raise NewsException(e, sys)
-
-def news(topic: str):
-    logging.info("Entered in News") 
-    try:
-        g_news = google_news(topic)
-        r_news = get_rss_news(keyword=topic)
-        logging.info(f"r_news = {r_news}")
-        latest_news = g_news + r_news
-        return latest_news
-    except Exception as e:
-        raise NewsException(e, sys)
-
 def news_ai(state: State):
     """AI agent that understand user query and generate string for news extraction"""
     logging.info("Entered in News AI")
@@ -70,7 +45,7 @@ def orchestrator(state: State):
             ),
         ]
     )
-        print("Report Sections:",report_sections)
+        #print("Report Sections:",report_sections)
 
         return {"sections": report_sections.sections}
     except Exception as e:
