@@ -121,8 +121,11 @@ async function handleNewsSearch(query) {
         renderNewsResults(results);
     } catch (error) {
         console.error('Error fetching news results:', error);
-        showError(newsResultsContent, 'Failed to fetch news results. Please try again.');
+        showError(newsResultsContent, 'I couldn’t fetch results right now. Would you like me to try again or search another topic?');
     }
+    
+    // Clear the input field
+    newsSearchInput.value = '';
 }
 
 // Handler for help search
@@ -143,6 +146,9 @@ async function handleHelpSearch(query) {
         console.error('Error fetching help results:', error);
         showError(helpResultsContent, 'Failed to fetch help results. Please try again.');
     }
+    
+    // Clear the input field
+    helpSearchInput.value = '';
 }
 
 // Fetch news search results from API

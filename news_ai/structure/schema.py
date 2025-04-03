@@ -1,19 +1,19 @@
-from typing import Annotated, List
+from typing import Annotated, List, Any
 import operator
 from typing_extensions import TypedDict
 from pydantic import BaseModel, Field
 
 class Section(BaseModel):
-    title: str = Field(
+    title: Any = Field(
         description="A title of the news",
     )
-    link: str = Field(
+    link: Any = Field(
         description="A link to the news",
     )
-    time_published: str = Field(
+    date: Any = Field(
         description="A time when news published",
     )
-    source: str = Field(
+    source: Any = Field(
         description="A news chennel name",
     )
 

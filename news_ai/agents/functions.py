@@ -48,3 +48,25 @@ def news(topic: str):
         return g_news
     except Exception as e:
         raise NewsException(e, sys)
+    
+def sanitize_news_list(news_list: list[dict]) -> list[dict]:
+    sanitized = []
+
+    for item in news_list:
+        try:
+            if any(char in item.get("title", "") for char in ["\ufffd", "�", "ass"]):
+                continue
+            # Convert everything to string and filter extra fields
+            news = {
+                "title": str(item.get("title", "")),
+                "link": str(item.get("link", "")),
+                "date": str(item.get("date", "")),
+                "source": str(item.get("source", ""))
+            }
+           
+            sanitized.append(news)
+        except Exception as e:
+            print(f"Skipping invalid item: {item} → Error: {e}")
+            continue
+
+    return sanitized

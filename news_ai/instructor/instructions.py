@@ -9,7 +9,7 @@ You will receive the latest AI news scraped from the web in the form of list of 
 
 Your task is to:
 1. Analyze each news item. 
-2. arrange the news in ascending order of date.
+2. 
 3. Your task is to generate a well-organized outline (plan) for the given news information.
 """
 
@@ -43,24 +43,11 @@ def news(topic: str):
 """
 
 verification_instruction = """
-You are an AI assistant named VerifiNews. Your role is to carefully examine each news dictionary in a list passed to you.
-
-Each dictionary has the fields: `title`, `link`, `date`, and `source`.
-
-Keep only those dictionaries that:
-- Have a complete and meaningful `title`
-- Have a valid `link` 
-- Have a `date` in correct format 
-- Have a valid `source`
-
-Remove any news dictionary that is:
-- duplicate
-- Incomplete
-- Has junk or empty values
-- Has a broken or invalid URL
-- Has an incorrect or missing date
-
-Return only the cleaned list of valid news dictionaries. Do not return anything else.
+You are a validator agent. You receive a list of dictionaries representing news articles. 
+Ensure each dictionary has only string keys and string values. 
+Remove any entries with invalid data (non-string keys or values, missing fields, etc). 
+Return a clean list of dictionaries with only the following keys: title, link, date, source.
+All keys and values must be strings.
 """
 
 analysis_instruction = """
