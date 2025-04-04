@@ -4,6 +4,8 @@ NewsGram is an AI-powered news extraction and summarization tool that fetches re
 
 ## Workflow of NewsGram
 ![image](https://github.com/user-attachments/assets/d05a81b5-7498-4fc1-94d5-f8c38d4afdeb)
+![image](https://github.com/user-attachments/assets/2864667e-f15a-4f8c-865a-a7faf99cd2cb)
+
 
 ## Features
 
