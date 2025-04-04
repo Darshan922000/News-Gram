@@ -3,7 +3,6 @@
 NewsGram is an AI-powered news extraction and summarization tool that fetches real-time news from top Canadian sources using RSS feeds and Google Serper API, stores them in a structured SQLite database, and allows intelligent querying using LLMs (like ChatGPT) or LangChain agents.
 
 ## Workflow of NewsGram
-![image](https://github.com/user-attachments/assets/d05a81b5-7498-4fc1-94d5-f8c38d4afdeb)
 ![image](https://github.com/user-attachments/assets/2864667e-f15a-4f8c-865a-a7faf99cd2cb)
 
 
