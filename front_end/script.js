@@ -59,6 +59,9 @@ function updateThemeIcons(theme) {
 document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     setupEventListeners();
+    
+    // Clear news data from local storage on page load
+    localStorage.removeItem('newsData');
 });
 
 // Set up all event listeners
@@ -119,9 +122,10 @@ async function handleNewsSearch(query) {
     try {
         const results = await fetchNewsResults(query);
         renderNewsResults(results);
+        localStorage.setItem('newsData', results);
     } catch (error) {
         console.error('Error fetching news results:', error);
-        showError(newsResultsContent, 'I couldn’t fetch results right now. Would you like me to try again or search another topic?');
+        showError(newsResultsContent, "I couldn't fetch results right now. Would you like me to try again or search another topic?");
     }
     
     // Clear the input field
@@ -226,6 +230,9 @@ function renderNewsResults(results) {
                 .replace(/Published: (.*?)$/gm, '<span class="news-time">Published: $1</span>')
                 // Add special styling for conclusion sections
                 .replace(/<p>Conclusion:/g, '<p class="conclusion">Conclusion:');
+            
+            // Replace news links with new tab links
+            htmlContent = htmlContent.replace(/<a href="(.*?)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"');
             
             newsCard.innerHTML = htmlContent;
             newsResultsContent.appendChild(newsCard);
