@@ -1,12 +1,22 @@
 from langgraph.constants import Send
 from news_ai.instructor.instructions import orchestration_instruction, news_instruction, explainer_instruction, worker_instruction
 from news_ai.structure.schema import WorkerState, State, ExplainerState
-from news_ai.llm.planner import planner, llm, newsai, llm_2
+from news_ai.llm.planner import planner, llm, newsai
 from langchain_core.messages import SystemMessage, HumanMessage
 from news_ai.logging.logger import logging
 from news_ai.exception_handler.exception import NewsException
 import sys
 from news_ai.agents.functions import news, sanitize_news_list
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
+os.environ["LANGSMITH_PROJECT"]=os.getenv("LANGSMITH_PROJECT")
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
 
 # Nodes
 def news_ai(state: State):
@@ -112,7 +122,7 @@ def assign_workers(state: State):
 def explainer(state: ExplainerState):
     logging.info("Entered in Explainer")
     try:
-        explainer = llm_2
+        explainer = llm
         response = explainer.invoke(
         [
             SystemMessage(content=explainer_instruction),

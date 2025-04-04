@@ -4,17 +4,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from langchain_core.messages import HumanMessage
 from news_ai.system.graph import synth_mind, help_search
-import os
-from dotenv import load_dotenv
-load_dotenv()
 
-
-# os.environ["LANGSMITH_TRACING"] = "true"
-# os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
-# os.environ["LANGSMITH_PROJECT"]=os.getenv("LANGSMITH_PROJECT")
-os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
-os.environ["SERPER_API_KEY"] = os.getenv("SERPER_API_KEY")
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 # Create FastAPI app
 app = FastAPI(
     title="News AI API",
