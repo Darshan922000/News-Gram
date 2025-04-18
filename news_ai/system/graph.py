@@ -7,15 +7,15 @@ def synth_mind():
     builder = StateGraph(State)
 
     # Add the nodes
-    builder.add_node("news_ai", news_ai)
+    builder.add_node("smart_search_ai", news_ai)
     # builder.add_node("verify_news", verify_news)
     builder.add_node("orchestrator", orchestrator)
     builder.add_node("llm_call", llm_call)
     builder.add_node("synthesizer", synthesizer)
 
     # Add edges to connect nodes
-    builder.add_edge(START, "news_ai")
-    builder.add_edge("news_ai", "orchestrator")
+    builder.add_edge(START, "smart_search_ai")
+    builder.add_edge("smart_search_ai", "orchestrator")
     # builder.add_edge("news_ai", "verify_news")
     # builder.add_edge("verify_news", "orchestrator")
     builder.add_conditional_edges(

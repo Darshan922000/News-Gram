@@ -1,7 +1,7 @@
 [project]
 name = "news-ai"
 version = "0.1.0"
-description = "News extractor by key words"
+description = "News extractor by key word"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
