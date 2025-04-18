@@ -1,6 +1,6 @@
 # 📡 NewsGram – Intelligent News Aggregator
 
-NewsGram is an AI-powered news extraction and summarization tool that fetches real-time news by using Google Serper API, stores them in a structured SQLite database, and allows intelligent querying using LLMs (like ChatGPT) or LangChain agents.
+NewsGram is an AI-powered news extraction and summarization tool that fetches real-time news by using Google Serper API, and generated structured output by LLMs (like ChatGPT) or LangChain agents.
 
 ## Workflow of NewsGram
 ![image](https://github.com/user-attachments/assets/6946476a-8dee-43ea-acb7-37fe5035d8ee)
