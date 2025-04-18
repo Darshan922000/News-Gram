@@ -1,0 +1,30 @@
+[project]
+name = "news-ai"
+version = "0.1.0"
+description = "News extractor by key words"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dotenv>=0.9.9",
+    "fastapi[standard]>=0.115.11",
+    "feedparser>=6.0.11",
+    "langchain>=0.3.19",
+    "langchain-community>=0.3.18",
+    "langchain-core>=0.3.40",
+    "langchain-groq>=0.2.4",
+    "langchain-openai>=0.3.7",
+    "langgraph>=0.3.2",
+    "langgraph-cli[inmem]>=0.1.84",
+    "langsmith>=0.3.11",
+    "pillow>=11.1.0",
+    "pydantic>=2.10.6",
+    "python-dotenv>=1.0.1",
+    "streamlit>=1.43.2",
+    "trafilatura>=2.0.0",
+    "uvicorn[standard]>=0.34.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+]

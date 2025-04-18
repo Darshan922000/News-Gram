@@ -1,0 +1,8 @@
+{
+  "dependencies":["."],
+  "graphs":{
+    "news_ai":"./graph.py:news"
+  },
+  "env":"../../.env"
+
+}
